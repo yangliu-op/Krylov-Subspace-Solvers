@@ -8,7 +8,7 @@ import torch
 from torch import pinverse as pinv
 
 class MINRES(object):
-    def __init__(self, A, b, rtol=1E-4, maxit=100, Delta=0, M=None, shift=0, 
+    def __init__(self, A, b, rtol=1E-4, maxit=100, M=None, shift=0, 
                  reorth=True, npc=True, inexactness="relres", 
                  eps=1E-8):
         '''
@@ -22,8 +22,6 @@ class MINRES(object):
             DESCRIPTION. The default is 1E-4.
         maxit : TYPE, optional
             Maximum iteration. The default is 100.
-        Delta : TYPE, optional
-            Trust region radius. The default is 0.
         M : TYPE, optional
             Positive semedefinite Preconditioner for H and CS. The default is None.
         shift : TYPE, optional
@@ -39,11 +37,6 @@ class MINRES(object):
         eps : TYPE, optional
             Termination condition of machine error, can be large. 
             The default is 1E-2.
-
-        Returns
-        -------
-        Many.
-
         '''
         # Initialize methods
         self.A = A

@@ -2,13 +2,13 @@ import torch
     
 def FCG(A, b, tol, maxiter, M=None, shift = 0):
     """
-    Conjugate gradient mathods. Solve Ax=b for PD matrices.
+    Flexible Conjugate Gradient methods. Solve Ax=b for PD matrices.
     INPUT:
         A: Positive definite matrix
         b: column vector
         tol: inexactness tolerance
         maxiter: maximum iterations
-        M: preconditioner function handle on v, returns M^{\dagger} v
+        M: preconditioner, function handle on v, returns (approx) M^{\dagger} v
         shift: input = A + shift * eye
     OUTPUT:
         x: best solution x
@@ -54,13 +54,12 @@ def FCG(A, b, tol, maxiter, M=None, shift = 0):
 
 def myCG(A, b, tol, maxiter, shift = 0):
     """
-    Conjugate gradient mathods. Solve Ax=b for PD matrices.
+    Conjugate gradient methods. Solve Ax=b for PD matrices.
     INPUT:
         A: Positive definite matrix
         b: column vector
         tol: inexactness tolerance
         maxiter: maximum iterations
-        M: preconditioner function handle on v, returns M^{\dagger} v
         shift: input = A + shift * eye
     OUTPUT:
         x: best solution x

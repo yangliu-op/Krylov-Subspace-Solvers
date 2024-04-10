@@ -544,14 +544,12 @@ def pseudoinverse_recovery():
     record_all = []  
     methods_all = []
     # reorth = False
-    S = torch.randn(n, n, dtype=torch.complex128)
-    M = torch.mm(S, S.H)
     reorth = True
-    PA1 = MINRES(A1, b, rtol, maxit, M=M, reorth=reorth)
+    PA1 = MINRES(A1, b, rtol, maxit, reorth=reorth)
     PA1.run()
     methods_all.append('Hermitian')
     record_all.append(PA1.record)
-    PA2 = MINRES(A2, b, rtol, maxit, M=M, reorth=reorth)
+    PA2 = MINRES(A2, b, rtol, maxit, reorth=reorth)
     PA2.run()
     methods_all.append('Complex Symmetric')
     record_all.append(PA2.record)
@@ -637,11 +635,11 @@ def verification():
     
 if __name__ == '__main__':
     ### To test/verify implementation, run:
-    # verification()
+    verification()
     
     ### To generate pseudo-inverse recovery experiments between Hermitian systems  
     ### and Complex-symmetric systems, run:
-    pseudoinverse_recovery() 
+    # pseudoinverse_recovery() 
     
     ### To generate pseudo-inverse recovery experiments between MINRES-QLP and 
     # MINRES run:

@@ -308,7 +308,7 @@ class MINRES(object):
                 self._lifting_formula(self.r, self.r)
     
     def _lifting_formula(self, r1, r2):
-        self.x_lifted = self.x - torch.vdot(r2, self.x)/torch.vdot(r1, r2)*r1
+        self.x_lifted = self.x - torch.vdot(r1, self.x)/torch.vdot(r2, r1)*r2
     
     def _symgivens(self, a, b):
         # cs, sn, gamma2 computation from [Choi, 2006]MINRES-QLP
@@ -544,12 +544,14 @@ def pseudoinverse_recovery():
     record_all = []  
     methods_all = []
     # reorth = False
+    S = torch.randn(n, n, dtype=torch.complex128)
+    M = torch.mm(S, S.H)
     reorth = True
-    PA1 = MINRES(A1, b, rtol, maxit, reorth=reorth)
+    PA1 = MINRES(A1, b, rtol, maxit, M=M, reorth=reorth)
     PA1.run()
     methods_all.append('Hermitian')
     record_all.append(PA1.record)
-    PA2 = MINRES(A2, b, rtol, maxit, reorth=reorth)
+    PA2 = MINRES(A2, b, rtol, maxit, M=M, reorth=reorth)
     PA2.run()
     methods_all.append('Complex Symmetric')
     record_all.append(PA2.record)
@@ -635,12 +637,12 @@ def verification():
     
 if __name__ == '__main__':
     ### To test/verify implementation, run:
-    verification()
+    # verification()
     
     ### To generate pseudo-inverse recovery experiments between Hermitian systems  
     ### and Complex-symmetric systems, run:
-    # pseudoinverse_recovery() 
+    pseudoinverse_recovery() 
     
     ### To generate pseudo-inverse recovery experiments between MINRES-QLP and 
-    ### MINRES run:
+    # MINRES run:
     # MINRES_vs_MINRESQLP()

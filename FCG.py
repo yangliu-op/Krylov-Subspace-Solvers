@@ -88,8 +88,47 @@ def myCG(A, b, tol, maxiter, shift = 0):
             return x, rel_res, T
         rTrl = rTr
         rTr = r @ r
-        beta = rTr/rTrl # Flexible CG
-        # beta = rTz/rTzl # Standard CG
+        beta = rTr/rTrl
+        p = r + beta*p
+    return x, rel_res, T
+
+def CCG(A, b, tol, maxiter, shift = 0):
+    """
+    Conjugate gradient methods. Solve Ax=b for Hermitian PD matrices.
+    INPUT:
+        A: Positive definite matrix
+        b: column vector
+        tol: inexactness tolerance
+        maxiter: maximum iterations
+        shift: input = A + shift * eye
+    OUTPUT:
+        x: best solution x
+        rel_res: relative residual
+        T: iterations
+    """
+    x = torch.zeros_like(b)
+    r = b
+    bnorm = b.norm() 
+    T = 0
+    p = r.clone()
+    rHr = torch.vdot(r, r)
+    
+    while T < maxiter:
+        Ap = Ax(A, p) + shift*p
+        T += 1 # Matrix-vector product being made
+        pHAp = torch.vdot(p, Ap)
+        if pHAp.real <= 0:
+            print('pHAp =', pHAp)
+            raise ValueError('pHAp <= 0 in myCG')
+        alpha = rHr/pHAp
+        x = x + alpha*p
+        r = r - alpha*Ap
+        rel_res = r.norm()/bnorm      
+        if rel_res < tol:
+            return x, rel_res, T
+        rHrl = rHr
+        rHr = torch.vdot(r, r)
+        beta = rHr/rHrl
         p = r + beta*p
     return x, rel_res, T
 

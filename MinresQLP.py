@@ -339,7 +339,7 @@ def MinresQLP(A, b, rtol=None, maxit=None, M=None, shift=None, reOrth=False,
             rk = sn**2 * oldrk - phi * cs * vnew
             
         if Adb is not None:
-            x_lifted = x - (rk @ x)/phi**2 * rk # Lifting formula
+            x_lifted = x - rk.T.dot(x)/phi**2 * rk # Lifting formula
             # record for testing lifted x
             tmp = torch.tensor([(Adb - x).norm()/Adb_norm, 
                               (Adb - x_lifted).norm()/Adb_norm], 

@@ -531,7 +531,7 @@ def SkewHerm(n, r=None, device=None):
         A = U @ torch.diag(tocomp(s)) @ V.H
     return A, U, s, V.H
     
-def pseudo():
+def pseudoinverse_recovery():
     n = 20
     d = 15
     A1, U1, s1, V1 = Herm(n,d)
@@ -558,7 +558,7 @@ def pseudo():
        os.makedirs(mypath)
     showFigure(methods_all, record_all, mypath)
 
-def MINRESQLP_exp():
+def MINRES_vs_MINRESQLP():
     n = 20
     d = 15
     A1, U1, s1, V1 = Symm(n,d)
@@ -581,7 +581,7 @@ def MINRESQLP_exp():
        os.makedirs(mypath)
     showFigure(methods_all, record_all, mypath)
 
-def main(): 
+def verification(): 
     """Run an example of minresQLP."""
 #    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     device = torch.device("cpu")
@@ -635,12 +635,12 @@ def main():
     
 if __name__ == '__main__':
     ### To test/verify implementation, run:
-    main()
+    verification()
     
     ### To generate pseudo-inverse recovery experiments between Hermitian systems  
     ### and Complex-symmetric systems, run:
-    # pseudo() 
+    # pseudoinverse_recovery() 
     
     ### To generate pseudo-inverse recovery experiments between MINRES-QLP and 
     ### MINRES run:
-    # MINRESQLP_exp()
+    # MINRES_vs_MINRESQLP()
